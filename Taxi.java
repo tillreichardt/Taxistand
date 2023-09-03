@@ -6,8 +6,9 @@ public class Taxi extends Actor {
 
     // Positionen für die Animation
     private Position targetPosition = new Position();
-    private boolean move = false;
     private int stepSize = 7;
+    private int moveDelay = 0;
+    private Position nextTargetPosition = new Position(); // for delay
 
     public Taxi() {
         // Setze Kennzeichen
@@ -17,9 +18,6 @@ public class Taxi extends Actor {
         int randomNumber = Greenfoot.getRandomNumber(10);
         String fileName = "Taxi-" + randomNumber + ".png";
         setImage(fileName);
-
-        // Setze default Position in Welt
-        this.targetPosition.setPosition(0,0);
     }
 
     private String generiereKennzeichen() {
@@ -56,14 +54,25 @@ public class Taxi extends Actor {
     }
 
     public void moveToPosition(int x, int y) {
-        this.move = true;
         this.targetPosition.setPosition(x, y);
+    }
+    
+     public void moveToPosition(int x, int y, int delay) {
+         this.moveDelay = delay;
+         this.nextTargetPosition.setPosition(x, y);
     }
 
     public void act(){
-
+        // Prüfe, ob delayed move da ist
+        if (moveDelay == 1) {
+            this.targetPosition.setPosition(nextTargetPosition.getX(), nextTargetPosition.getY());
+        }
+        if (moveDelay > 0) {
+            moveDelay -= 1;
+        }
+        
         // Prüfe ob unsere aktuelle Position von der Zielposition abweicht
-        if (move && (getX() != targetPosition.getX() || getY() != targetPosition.getY())) {
+        if (getX() != targetPosition.getX() || getY() != targetPosition.getY()) {
             // Berechne die Differenz zwischen der aktuellen Position und der Zielposition
             int deltaX = targetPosition.getX() - getX();
             int deltaY = targetPosition.getY() - getY();

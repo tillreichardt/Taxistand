@@ -1,4 +1,4 @@
-import java.util.Random; 
+import java.util.*; 
 import greenfoot.*;
 
 public class Taxizentrale extends Actor{
@@ -7,9 +7,9 @@ public class Taxizentrale extends Actor{
     // Konstruktor, initialisiert einen neuen Taxistand mit einer maximalen Anzahl von Taxis
     public Taxizentrale(int maxTaxis) {
         taxistand = new Taxi[maxTaxis];
-        
+
     }
-    
+
     // Gibt die aktuelle Anzahl der Taxis im Stand zurück
     public int getAnzahlWartenderTaxis() {
         int anzahl = 0; 
@@ -31,20 +31,19 @@ public class Taxizentrale extends Actor{
         System.out.println("\nTaxi mit folgendem Kennzeichen fährt ab: " + abfahrendesTaxi.getKennzeichen());
         getWorld().removeObject(abfahrendesTaxi);
         rueckeAuf();
-        
+
         return abfahrendesTaxi;           
     }
-    
+
     // Verschiebt alle Taxis eine Position nach vorn im Array, um Platz für neue Taxis zu schaffen
     private void rueckeAuf() {
-
         for (int i = 0; i < getAnzahlWartenderTaxis() - 1; i++) {
             taxistand[i] = taxistand[i + 1];
-            taxistand[i].setLocation(i* gSize + gSize/2, gSize/2);
+            taxistand[i].moveToPosition(i* gSize + gSize/2, gSize/2, 10*(i+1));
         }
         taxistand[getAnzahlWartenderTaxis() - 1] = null; //setzt letzes Element des taxistandes auf null, um Speicherplatz des zuletzt besetzten Elements im Array freizugeben, nachdem alle Taxis aufgerückt sind. 
     }
-        
+
     // Reicht ein neues Taxi in den Taxistand ein
     public boolean reiheEin(Taxi pTaxi) {
         if (getAnzahlWartenderTaxis() >= taxistand.length) {
@@ -56,10 +55,10 @@ public class Taxizentrale extends Actor{
         pTaxi.setPosition(taxistand.length * gSize + gSize/2, gSize/2);
         pTaxi.moveToPosition(getAnzahlWartenderTaxis() * gSize + gSize/2, gSize/2);
         taxistand[getAnzahlWartenderTaxis()] = pTaxi;
-    
+
         return true;
     }
-    
+
     // Gibt eine Liste der aktuellen Taxis im Stand aus
     public void aktuelleTaxisImStand(){
         System.out.print("Aktuelle Taxis im Stand: ");
@@ -69,7 +68,6 @@ public class Taxizentrale extends Actor{
         System.out.println();
     }
 
-    
     // Gibt ein Taxi an einem bestimmten Index im Array zurück
     public Taxi getTaxi(int index) {
         if (index >= 0 && index < getAnzahlWartenderTaxis()) {
@@ -79,7 +77,6 @@ public class Taxizentrale extends Actor{
             return null;
         }
     }
-    
-    
+
 
 }
