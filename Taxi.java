@@ -62,11 +62,15 @@ public class Taxi extends Actor {
     public void act(){
 
         // Prüfe ob unsere aktuelle Position von der Zielposition abweicht
-        if(move == true && (getX() != this.targetPosition.getX() || getY() != this.targetPosition.getY())) {
+        if(this.move == true && (getX() != this.targetPosition.getX() || getY() != this.targetPosition.getY())) {
             System.out.println("Wir müssen unsere Position updaten!");
             // Berechne die Schrittgröße für die Bewegung (hier wird angenommen, dass 1 Pixel pro Aktualisierungsschritt bewegt werden soll)
             int deltaX = this.targetPosition.getX() - getX();
             int deltaY = this.targetPosition.getY() - getY();
+            
+            if (deltaX == 0 && deltaY == 0) {
+                this.move = false;
+            }
 
             // Prüfe, ob die Zielposition in der X-Richtung erreicht werden kann
             if (deltaX != 0) {
@@ -83,6 +87,6 @@ public class Taxi extends Actor {
             }
         }            
         // Hier kommt die Logik, dass wir nur 1pixel pro "Act-Aufruf uns bewegen dürfen
-        this.setLocation(this.targetPosition.getX(),this.targetPosition.getY());
+        // this.setLocation(this.targetPosition.getX(),this.targetPosition.getY());
     }
 }
