@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Taxizentrale
+comment1.params=maxTaxis
+comment1.target=Taxizentrale(int)
+comment2.params=
+comment2.target=int\ getAnzahlWartenderTaxis()
+comment3.params=
+comment3.target=Taxi\ fahreAb()
+comment4.params=
+comment4.target=void\ rueckeAuf()
+comment5.params=pTaxi
+comment5.target=boolean\ reiheEin(Taxi)
+comment6.params=
+comment6.target=void\ aktuelleTaxisImStand()
+comment7.params=index
+comment7.target=Taxi\ getTaxi(int)
+numComments=8
