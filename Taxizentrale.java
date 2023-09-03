@@ -53,8 +53,10 @@ public class Taxizentrale extends Actor{
         }
         // Die neue Position wird durch die Koordinaten (lastTaxiIndex, 2) festgelegt.
         System.out.println("\nTaxi mit folgendem Kennzeichen reiht sich ein: " + pTaxi.getKennzeichen());
-        pTaxi.setPosition(getAnzahlWartenderTaxis() * gSize + gSize/2, gSize/2);
+        pTaxi.setPosition(taxistand.length * gSize + gSize/2, gSize/2);
+        pTaxi.moveToPosition(getAnzahlWartenderTaxis() * gSize + gSize/2, gSize/2);
         taxistand[getAnzahlWartenderTaxis()] = pTaxi;
+    
         return true;
     }
     

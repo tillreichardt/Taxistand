@@ -7,6 +7,7 @@ public class Taxi extends Actor {
     // Positionen für die Animation
     private Position targetPosition = new Position();
     private boolean move = false;
+    private int stepSize = 7;
 
     public Taxi() {
         // Setze Kennzeichen
@@ -62,30 +63,39 @@ public class Taxi extends Actor {
     public void act(){
 
         // Prüfe ob unsere aktuelle Position von der Zielposition abweicht
-        if(this.move == true && (getX() != this.targetPosition.getX() || getY() != this.targetPosition.getY())) {
-            System.out.println("Wir müssen unsere Position updaten!");
-            // Berechne die Schrittgröße für die Bewegung (hier wird angenommen, dass 1 Pixel pro Aktualisierungsschritt bewegt werden soll)
-            int deltaX = this.targetPosition.getX() - getX();
-            int deltaY = this.targetPosition.getY() - getY();
-            
-            if (deltaX == 0 && deltaY == 0) {
-                this.move = false;
-            }
+        if (move && (getX() != targetPosition.getX() || getY() != targetPosition.getY())) {
+            // Berechne die Differenz zwischen der aktuellen Position und der Zielposition
+            int deltaX = targetPosition.getX() - getX();
+            int deltaY = targetPosition.getY() - getY();
 
-            // Prüfe, ob die Zielposition in der X-Richtung erreicht werden kann
+            // Berechne die Richtungsfaktoren für die Schritte
+            int stepX = (deltaX > 0) ? 1 : (deltaX < 0) ? -1 : 0;
+            int stepY = (deltaY > 0) ? 1 : (deltaY < 0) ? -1 : 0;
+
+            // Überprüfe, ob ein Schritt in X-Richtung möglich ist
             if (deltaX != 0) {
-                int stepX = (deltaX > 0) ? 1 : -1; // Bestimme die Richtung in X
-                int newX = getX() + stepX; // Berechne die neue X-Position um einen Pixel
-                this.setLocation(newX, getY()); // Setze die neue X-Position
+                int newX = getX() + stepSize * stepX;
+                
+                // Überprüfe, ob der nächste Schritt über das Ziel hinausgeht
+                if ((stepX > 0 && newX > targetPosition.getX()) || (stepX < 0 && newX < targetPosition.getX())) {
+                    newX = targetPosition.getX(); // Setze auf die Ziel-X-Position
+                }
+                
+                setLocation(newX, getY());
             }
 
-            // Prüfe, ob die Zielposition in der Y-Richtung erreicht werden kann
+            // Überprüfe, ob ein Schritt in Y-Richtung möglich ist
             if (deltaY != 0) {
-                int stepY = (deltaY > 0) ? 1 : -1; // Bestimme die Richtung in Y
-                int newY = getY() + stepY; // Berechne die neue Y-Position um einen Pixel
-                this.setLocation(getX(), newY); // Setze die neue Y-Position
+                int newY = getY() + stepSize * stepY;
+                
+                // Überprüfe, ob der nächste Schritt über das Ziel hinausgeht
+                if ((stepY > 0 && newY > targetPosition.getY()) || (stepY < 0 && newY < targetPosition.getY())) {
+                    newY = targetPosition.getY(); // Setze auf die Ziel-Y-Position
+                }
+                
+                setLocation(getX(), newY);
             }
-        }            
+        }        
         // Hier kommt die Logik, dass wir nur 1pixel pro "Act-Aufruf uns bewegen dürfen
         // this.setLocation(this.targetPosition.getX(),this.targetPosition.getY());
     }
